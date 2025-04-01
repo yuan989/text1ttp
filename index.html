@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>fangziyu Game - Fun Adventure</title>
-    <meta name="description" content="Play fangziyu Game, an exciting HTML5 game right in your browser.">
+    <title>Konkr.io 战略游戏</title>
+    <meta name="description" content="体验Konkr.io战略游戏，测试您的战略思维和决策能力。">
     <link rel="canonical" href="https://fangziyu-game.com" />
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-QRGB65312Q"></script>
@@ -24,56 +24,37 @@
         }
         .game-container {
             aspect-ratio: 16/9;
-            max-width: 1200px;
+            max-width: 1000px;
             margin: 0 auto;
             position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: #111827;
+            color: white;
+            border-radius: 8px;
         }
-        #gameCanvas {
-            background: #000;
-            width: 100%;
-            height: 100%;
-        }
-        .game-controls {
-            text-align: center;
-            margin-top: 10px;
-        }
-        .btn {
+        .play-button {
             background: #4f46e5;
             color: white;
             border: none;
-            padding: 8px 16px;
-            border-radius: 4px;
+            padding: 16px 32px;
+            border-radius: 8px;
+            font-size: 20px;
+            font-weight: 600;
             cursor: pointer;
-            font-weight: 500;
-            margin: 0 5px;
+            transition: all 0.2s;
+            margin-top: 24px;
         }
-        .btn:hover {
+        .play-button:hover {
             background: #4338ca;
+            transform: translateY(-2px);
         }
-        .player {
-            position: absolute;
-            width: 30px;
-            height: 30px;
-            background-color: #4f46e5;
-            border-radius: 50%;
-            transition: all 0.1s ease;
-        }
-        .target {
-            position: absolute;
-            width: 25px;
-            height: 25px;
-            background-color: #ef4444;
-            border-radius: 50%;
-        }
-        .score-display {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: rgba(0,0,0,0.7);
-            color: white;
-            padding: 5px 10px;
-            border-radius: 4px;
-            font-weight: bold;
+        .game-logo {
+            max-width: 300px;
+            margin-bottom: 24px;
         }
     </style>
 </head>
@@ -81,50 +62,49 @@
     <header class="bg-white shadow-sm">
         <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
             <div class="flex justify-between items-center">
-                <h1 class="text-2xl font-bold text-gray-900">fangziyu Game</h1>
+                <h1 class="text-2xl font-bold text-gray-900">Konkr.io 战略游戏</h1>
             </div>
         </nav>
     </header>
 
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <section class="text-center mb-12">
-            <h2 class="text-3xl font-bold text-gray-900 mb-4">Target Chase</h2>
+            <h2 class="text-3xl font-bold text-gray-900 mb-4">征服世界，建立帝国</h2>
             <p class="text-xl text-gray-600 max-w-2xl mx-auto">
-                Use arrow keys or WASD to move the blue circle and catch the red targets. How many can you catch?
+                Konkr.io是一款令人上瘾的战略游戏，您可以在其中扩张领土、建立军队并征服整个地图。
             </p>
         </section>
 
         <section class="mb-12">
-            <div class="game-container bg-white rounded-lg shadow-lg overflow-hidden" id="gameContainer">
-                <div id="gameCanvas">
-                    <div class="score-display">Score: <span id="scoreValue">0</span></div>
-                </div>
-                <div class="game-controls">
-                    <button class="btn" id="startGame">Start Game</button>
-                    <button class="btn" id="resetGame">Reset</button>
-                </div>
+            <div class="game-container bg-white shadow-lg">
+                <img src="https://i.imgur.com/XqYGzZV.png" alt="Konkr.io游戏截图" class="game-logo">
+                <h3 class="text-2xl font-bold mb-4">由于技术限制，无法直接嵌入游戏</h3>
+                <p class="mb-6 text-center max-w-md">Konkr.io设置了安全限制，阻止在其他网站中嵌入其内容。请点击下方按钮直接访问游戏。</p>
+                <a href="https://www.konkr.io" target="_blank" class="play-button">
+                    立即游玩 Konkr.io
+                </a>
             </div>
         </section>
 
         <section class="grid md:grid-cols-2 gap-8 mb-12">
             <div class="bg-white p-6 rounded-lg shadow-sm">
-                <h2 class="text-2xl font-bold text-gray-900 mb-4">Game Features</h2>
+                <h2 class="text-2xl font-bold text-gray-900 mb-4">游戏特色</h2>
                 <ul class="space-y-3 text-gray-600">
-                    <li>• Fast-paced gameplay</li>
-                    <li>• Keyboard controls</li>
-                    <li>• Score tracking</li>
-                    <li>• Increasing difficulty</li>
-                    <li>• No installation required</li>
+                    <li>• 简单易上手的战略游戏</li>
+                    <li>• 多样化的地图和挑战</li>
+                    <li>• 建立军队并扩展领土</li>
+                    <li>• 与AI或其他玩家对战</li>
+                    <li>• 无需下载，直接在浏览器中游玩</li>
                 </ul>
             </div>
             <div class="bg-white p-6 rounded-lg shadow-sm">
-                <h2 class="text-2xl font-bold text-gray-900 mb-4">How to Play</h2>
+                <h2 class="text-2xl font-bold text-gray-900 mb-4">游戏技巧</h2>
                 <ul class="space-y-3 text-gray-600">
-                    <li>• Use WASD or arrow keys to move</li>
-                    <li>• Catch the red targets</li>
-                    <li>• Each target gives you 1 point</li>
-                    <li>• Game speeds up as you score more</li>
-                    <li>• Try to beat your high score!</li>
+                    <li>• 优先占领产生更多资源的地块</li>
+                    <li>• 保持军队数量优势以防御和进攻</li>
+                    <li>• 战略性地选择扩张方向</li>
+                    <li>• 集中兵力攻击敌人的薄弱区域</li>
+                    <li>• 在合适的时机发动大规模进攻</li>
                 </ul>
             </div>
         </section>
@@ -132,144 +112,8 @@
 
     <footer class="bg-white border-t">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-            <p class="text-center text-gray-500">© 2024 fangziyu Game. All rights reserved.</p>
+            <p class="text-center text-gray-500">© 2024 方子瑜游戏导航. 保留所有权利。Konkr.io是其各自所有者的商标。</p>
         </div>
     </footer>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const gameCanvas = document.getElementById('gameCanvas');
-            const startButton = document.getElementById('startGame');
-            const resetButton = document.getElementById('resetGame');
-            const scoreDisplay = document.getElementById('scoreValue');
-            
-            let player = null;
-            let target = null;
-            let gameActive = false;
-            let score = 0;
-            let playerSpeed = 5;
-            let keysPressed = {};
-            
-            function createPlayer() {
-                player = document.createElement('div');
-                player.className = 'player';
-                player.style.left = '50%';
-                player.style.top = '50%';
-                gameCanvas.appendChild(player);
-            }
-            
-            function createTarget() {
-                if (target) gameCanvas.removeChild(target);
-                
-                target = document.createElement('div');
-                target.className = 'target';
-                
-                // Random position within the canvas
-                const maxX = gameCanvas.clientWidth - 25;
-                const maxY = gameCanvas.clientHeight - 25;
-                target.style.left = Math.floor(Math.random() * maxX) + 'px';
-                target.style.top = Math.floor(Math.random() * maxY) + 'px';
-                
-                gameCanvas.appendChild(target);
-            }
-            
-            function checkCollision() {
-                const playerRect = player.getBoundingClientRect();
-                const targetRect = target.getBoundingClientRect();
-                
-                if (
-                    playerRect.left < targetRect.right &&
-                    playerRect.right > targetRect.left &&
-                    playerRect.top < targetRect.bottom &&
-                    playerRect.bottom > targetRect.top
-                ) {
-                    score++;
-                    scoreDisplay.textContent = score;
-                    createTarget();
-                    
-                    // Increase speed slightly
-                    if (score % 5 === 0) {
-                        playerSpeed += 1;
-                    }
-                }
-            }
-            
-            function gameLoop() {
-                if (!gameActive) return;
-                
-                // Move player based on keys pressed
-                const playerRect = player.getBoundingClientRect();
-                const canvasRect = gameCanvas.getBoundingClientRect();
-                
-                let x = parseInt(player.style.left) || playerRect.left - canvasRect.left;
-                let y = parseInt(player.style.top) || playerRect.top - canvasRect.top;
-                
-                if (keysPressed['ArrowLeft'] || keysPressed['a'] || keysPressed['A']) {
-                    x -= playerSpeed;
-                }
-                if (keysPressed['ArrowRight'] || keysPressed['d'] || keysPressed['D']) {
-                    x += playerSpeed;
-                }
-                if (keysPressed['ArrowUp'] || keysPressed['w'] || keysPressed['W']) {
-                    y -= playerSpeed;
-                }
-                if (keysPressed['ArrowDown'] || keysPressed['s'] || keysPressed['S']) {
-                    y += playerSpeed;
-                }
-                
-                // Keep player within bounds
-                x = Math.max(0, Math.min(x, gameCanvas.clientWidth - 30));
-                y = Math.max(0, Math.min(y, gameCanvas.clientHeight - 30));
-                
-                player.style.left = x + 'px';
-                player.style.top = y + 'px';
-                
-                checkCollision();
-                
-                requestAnimationFrame(gameLoop);
-            }
-            
-            function startGame() {
-                if (gameActive) return;
-                
-                // Reset game state
-                score = 0;
-                playerSpeed = 5;
-                scoreDisplay.textContent = '0';
-                
-                // Remove existing elements
-                if (player) gameCanvas.removeChild(player);
-                if (target) gameCanvas.removeChild(target);
-                
-                createPlayer();
-                createTarget();
-                
-                gameActive = true;
-                gameLoop();
-            }
-            
-            function resetGame() {
-                gameActive = false;
-                score = 0;
-                playerSpeed = 5;
-                scoreDisplay.textContent = '0';
-                
-                if (player) gameCanvas.removeChild(player);
-                if (target) gameCanvas.removeChild(target);
-            }
-            
-            // Event listeners
-            startButton.addEventListener('click', startGame);
-            resetButton.addEventListener('click', resetGame);
-            
-            document.addEventListener('keydown', function(e) {
-                keysPressed[e.key] = true;
-            });
-            
-            document.addEventListener('keyup', function(e) {
-                keysPressed[e.key] = false;
-            });
-        });
-    </script>
 </body>
 </html>
