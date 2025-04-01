@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>fangziyu Game - Strategic Adventure</title>
-    <meta name="description" content="Play fangziyu Game, an exciting strategy game where you can test your skills and have fun.">
+    <title>fangziyu Game - Fun Adventure</title>
+    <meta name="description" content="Play fangziyu Game, an exciting HTML5 game right in your browser.">
     <link rel="canonical" href="https://fangziyu-game.com" />
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-QRGB65312Q"></script>
@@ -26,6 +26,54 @@
             aspect-ratio: 16/9;
             max-width: 1200px;
             margin: 0 auto;
+            position: relative;
+        }
+        #gameCanvas {
+            background: #000;
+            width: 100%;
+            height: 100%;
+        }
+        .game-controls {
+            text-align: center;
+            margin-top: 10px;
+        }
+        .btn {
+            background: #4f46e5;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            margin: 0 5px;
+        }
+        .btn:hover {
+            background: #4338ca;
+        }
+        .player {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background-color: #4f46e5;
+            border-radius: 50%;
+            transition: all 0.1s ease;
+        }
+        .target {
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            background-color: #ef4444;
+            border-radius: 50%;
+        }
+        .score-display {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-weight: bold;
         }
     </style>
 </head>
@@ -40,20 +88,21 @@
 
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <section class="text-center mb-12">
-            <h2 class="text-3xl font-bold text-gray-900 mb-4">Strategic Adventure</h2>
+            <h2 class="text-3xl font-bold text-gray-900 mb-4">Target Chase</h2>
             <p class="text-xl text-gray-600 max-w-2xl mx-auto">
-                Experience the thrill of strategy and adventure in this exciting game. Test your skills and have fun!
+                Use arrow keys or WASD to move the blue circle and catch the red targets. How many can you catch?
             </p>
         </section>
 
         <section class="mb-12">
-            <div class="game-container bg-white rounded-lg shadow-lg overflow-hidden">
-                <iframe 
-                    src="https://www.addictinggames.com/embed/html5-games/25201" 
-                    class="w-full h-full border-0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowfullscreen>
-                </iframe>
+            <div class="game-container bg-white rounded-lg shadow-lg overflow-hidden" id="gameContainer">
+                <div id="gameCanvas">
+                    <div class="score-display">Score: <span id="scoreValue">0</span></div>
+                </div>
+                <div class="game-controls">
+                    <button class="btn" id="startGame">Start Game</button>
+                    <button class="btn" id="resetGame">Reset</button>
+                </div>
             </div>
         </section>
 
@@ -61,21 +110,21 @@
             <div class="bg-white p-6 rounded-lg shadow-sm">
                 <h2 class="text-2xl font-bold text-gray-900 mb-4">Game Features</h2>
                 <ul class="space-y-3 text-gray-600">
-                    <li>• Engaging gameplay</li>
-                    <li>• Strategic challenges</li>
-                    <li>• Multiple levels</li>
+                    <li>• Fast-paced gameplay</li>
+                    <li>• Keyboard controls</li>
+                    <li>• Score tracking</li>
                     <li>• Increasing difficulty</li>
-                    <li>• Fun for all ages</li>
+                    <li>• No installation required</li>
                 </ul>
             </div>
             <div class="bg-white p-6 rounded-lg shadow-sm">
                 <h2 class="text-2xl font-bold text-gray-900 mb-4">How to Play</h2>
                 <ul class="space-y-3 text-gray-600">
-                    <li>• Use mouse to interact</li>
-                    <li>• Complete objectives on each level</li>
-                    <li>• Solve puzzles to progress</li>
-                    <li>• Collect items for bonuses</li>
-                    <li>• Beat your high score</li>
+                    <li>• Use WASD or arrow keys to move</li>
+                    <li>• Catch the red targets</li>
+                    <li>• Each target gives you 1 point</li>
+                    <li>• Game speeds up as you score more</li>
+                    <li>• Try to beat your high score!</li>
                 </ul>
             </div>
         </section>
@@ -86,5 +135,141 @@
             <p class="text-center text-gray-500">© 2024 fangziyu Game. All rights reserved.</p>
         </div>
     </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const gameCanvas = document.getElementById('gameCanvas');
+            const startButton = document.getElementById('startGame');
+            const resetButton = document.getElementById('resetGame');
+            const scoreDisplay = document.getElementById('scoreValue');
+            
+            let player = null;
+            let target = null;
+            let gameActive = false;
+            let score = 0;
+            let playerSpeed = 5;
+            let keysPressed = {};
+            
+            function createPlayer() {
+                player = document.createElement('div');
+                player.className = 'player';
+                player.style.left = '50%';
+                player.style.top = '50%';
+                gameCanvas.appendChild(player);
+            }
+            
+            function createTarget() {
+                if (target) gameCanvas.removeChild(target);
+                
+                target = document.createElement('div');
+                target.className = 'target';
+                
+                // Random position within the canvas
+                const maxX = gameCanvas.clientWidth - 25;
+                const maxY = gameCanvas.clientHeight - 25;
+                target.style.left = Math.floor(Math.random() * maxX) + 'px';
+                target.style.top = Math.floor(Math.random() * maxY) + 'px';
+                
+                gameCanvas.appendChild(target);
+            }
+            
+            function checkCollision() {
+                const playerRect = player.getBoundingClientRect();
+                const targetRect = target.getBoundingClientRect();
+                
+                if (
+                    playerRect.left < targetRect.right &&
+                    playerRect.right > targetRect.left &&
+                    playerRect.top < targetRect.bottom &&
+                    playerRect.bottom > targetRect.top
+                ) {
+                    score++;
+                    scoreDisplay.textContent = score;
+                    createTarget();
+                    
+                    // Increase speed slightly
+                    if (score % 5 === 0) {
+                        playerSpeed += 1;
+                    }
+                }
+            }
+            
+            function gameLoop() {
+                if (!gameActive) return;
+                
+                // Move player based on keys pressed
+                const playerRect = player.getBoundingClientRect();
+                const canvasRect = gameCanvas.getBoundingClientRect();
+                
+                let x = parseInt(player.style.left) || playerRect.left - canvasRect.left;
+                let y = parseInt(player.style.top) || playerRect.top - canvasRect.top;
+                
+                if (keysPressed['ArrowLeft'] || keysPressed['a'] || keysPressed['A']) {
+                    x -= playerSpeed;
+                }
+                if (keysPressed['ArrowRight'] || keysPressed['d'] || keysPressed['D']) {
+                    x += playerSpeed;
+                }
+                if (keysPressed['ArrowUp'] || keysPressed['w'] || keysPressed['W']) {
+                    y -= playerSpeed;
+                }
+                if (keysPressed['ArrowDown'] || keysPressed['s'] || keysPressed['S']) {
+                    y += playerSpeed;
+                }
+                
+                // Keep player within bounds
+                x = Math.max(0, Math.min(x, gameCanvas.clientWidth - 30));
+                y = Math.max(0, Math.min(y, gameCanvas.clientHeight - 30));
+                
+                player.style.left = x + 'px';
+                player.style.top = y + 'px';
+                
+                checkCollision();
+                
+                requestAnimationFrame(gameLoop);
+            }
+            
+            function startGame() {
+                if (gameActive) return;
+                
+                // Reset game state
+                score = 0;
+                playerSpeed = 5;
+                scoreDisplay.textContent = '0';
+                
+                // Remove existing elements
+                if (player) gameCanvas.removeChild(player);
+                if (target) gameCanvas.removeChild(target);
+                
+                createPlayer();
+                createTarget();
+                
+                gameActive = true;
+                gameLoop();
+            }
+            
+            function resetGame() {
+                gameActive = false;
+                score = 0;
+                playerSpeed = 5;
+                scoreDisplay.textContent = '0';
+                
+                if (player) gameCanvas.removeChild(player);
+                if (target) gameCanvas.removeChild(target);
+            }
+            
+            // Event listeners
+            startButton.addEventListener('click', startGame);
+            resetButton.addEventListener('click', resetGame);
+            
+            document.addEventListener('keydown', function(e) {
+                keysPressed[e.key] = true;
+            });
+            
+            document.addEventListener('keyup', function(e) {
+                keysPressed[e.key] = false;
+            });
+        });
+    </script>
 </body>
 </html>
